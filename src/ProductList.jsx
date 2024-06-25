@@ -1,38 +1,47 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ProductMapping from './ProductMapping'
 import { useState } from 'react';
 import { HiArrowNarrowRight } from "react-icons/hi";
 import allData from './DummyData';
+import { getProduct,getProductList } from './Api';
 function ProductList() {
 const [query,setQuery]=useState('');
 const [sort,setSort]=useState('lowTohigh');
+const [productList,setProductList] = useState([]);
 
-  console.log(allData)
+useEffect( function(){
+  let p =getProductList();
+  p.then(function(response){
+   setProductList(response.data.products)
+  })
+},[])
+
+
 function handleQuery(e){
   setQuery(e.target.value);
 
 
 }
 
-let data=allData.filter(function(item){
-  const allItem=item.tittle.toLowerCase();
+ let data=productList.filter(function(item){
+  const allItem=item.title.toLowerCase();
   const searchItem=query.toLowerCase();
 
   return (allItem.indexOf(searchItem)!=-1);
 })
 if(sort=='lowTohigh'){
-  data=data.sort(function(x,y){
+ data.sort(function(x,y){
     return x.price-y.price;
   })
 }
 else if(sort=='highTolow'){
-  data=data.sort(function(x,y){
+  data.sort(function(x,y){
     return y.price-x.price;
   })
 }
 else if(sort=="name"){
-  data=data.sort(function(x,y){
-    return x.tittle < y.tittle ? -1 :1;
+  data.sort(function(x,y){
+    return x.title < y.tittle ? -1 :1;
   }) 
 }
 
@@ -55,7 +64,7 @@ function handleFilter(e){
         </select>
       </div>
 
-    {data.length>1 && <ProductMapping products={data}/>}
+    {data.length>0 && <ProductMapping products={data}/>}
     {data.length==0 && <div className='flex justify-center bg-gray-700 text-white text-3xl'>Result Not Found</div>}
     <div className='mt-6  h-20 flex items-center ml-8 gap-1'>
       

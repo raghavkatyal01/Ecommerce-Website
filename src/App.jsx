@@ -14,7 +14,7 @@ function App() {
 
 <Routes>
   <Route index element={<ProductList/>}></Route>
-  <Route path="/ProductDetail/:sku" element={<ProductDetail/>}></Route>
+  <Route path="/ProductDetail/:id" element={<ProductDetail/>}></Route>
   <Route></Route>
 </Routes>
     <Footer></Footer>
