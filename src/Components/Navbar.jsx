@@ -1,19 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { PiShoppingCartSimpleLight } from "react-icons/pi";
 
-function Navbar() {
+function Navbar({productCount}) {
   return (
     <>
-    <div class="flex justify-between bg-gray-400">
-        <div calss="flex flex-col justify-center">
-     <img class=" ml-2 w-14"src="https://cdn4.iconfinder.com/data/icons/flat-brand-logo-2/512/amazon-1024.png" alt="" />
+    <div class="flex w-full justify-between bg-gray-400">
+        <div class="flex flex-col justify-center">
+        
+     <img class=" ml-2 max-w-16"src="https://cdn4.iconfinder.com/data/icons/flat-brand-logo-2/512/amazon-1024.png" alt="" />
+    </div >
+    <div class="flex flex-col static">
+     <Link to="/cart"><PiShoppingCartSimpleLight className=' mt-4 mr-2 text-3xl'/></Link>
+     <span className=' self-center text-xs ' >{productCount}</span>
      </div>
-     <div class="flex  gap-8 items-center justify-center mr-2 ">
-        <Link to="/">HOME</Link>
-        <a href="">BLOG</a>
-        <a href="">CONTACT US</a>
-     </div>
-     </div>
+
+    </div>
     </>
   )
 }

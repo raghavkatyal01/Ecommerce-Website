@@ -2,36 +2,46 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiArrowSmLeft } from "react-icons/hi";
+import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { getProduct } from './Api';
+import Loading from './Components/Loading';
+import PageNotFound from './Components/PageNotFound';
 
-function ProductDetail() {
-    const[ProductDetail,setProductDetail] =useState({});
-    const param=useParams();
-  
+function ProductDetail({addToCart}) {
+    const[ProductDetail,setProductDetail] =useState();
+    const [loading,setLoading] =useState(true);
+    const [count,setCount] = useState(1);
+    const id=+(useParams().id);
+    function HandleInputChange(e){
+      setCount(+(e.target.value));
+    }
+    function HandleAddtoCart(){
+      addToCart(id,count);
+    }
     useEffect(()=>{
-        const p=getProduct(param.id);
+        const p=getProduct(id);
         p.then((response)=>{
         
-            setProductDetail(response.data)
-        })
-    },[])
-   
-    console.log(ProductDetail);
-    // let products;
-    // for(let i=0;ProductDetail.length;i++){
-    //     const p=allData[i];
-    //     if(p.sku==sku){
-    //         products=allData[i];
-    //         break;
-    //     }
-    // }
-    // console.log(products);
+            setProductDetail(response)
+            setLoading(false);
+            setCount(1);
+        }).catch(function(){
+          setLoading(false);
+        }
+        )
+    },[id])
+
+   if(loading){
+   return <Loading/>
+   }
+    if(!ProductDetail){
+      return <PageNotFound/>
+    }
   return (
-<>
+ProductDetail ? <>
 <Link to="/"><HiArrowSmLeft className='text-3xl'/></Link>
-<div class="w-screen flex items-center justify-center">
-      <div class="max-w-4xl flex items-start mt-2 m-8 gap-x-6 border-2 p-6  shadow-2xl">
+<div class=" max-h-80  flex items-center justify-center">
+      <div class="max-w-4xl flex items-start  m-8 gap-x-6 border-2 p-6  shadow-2xl">
         <img
           class="max-w-80"
           src={ProductDetail.thumbnail}
@@ -44,13 +54,18 @@ function ProductDetail() {
           {ProductDetail.description}
           </p>
           <div class="flex gap-x-4">
-            <p class="border-2 pl-6 py-2 w-16">1</p>
-            <a class="bg-gray-400 px-16 py-2">Add to Cart</a>
+            <input class="border-2 pl-2 py-2 w-16" type="number" value={count} onChange={HandleInputChange}/>
+          <button onClick={HandleAddtoCart} class="bg-gray-400 hover:bg-gray-500  px-16 py-2">Add to Cart</button> 
           </div>
         </div>
       </div>
     </div>
-</>
+    <div class="flex justify-between">
+   <div class="p-2"> {id>1 && <Link to={"/ProductDetail/"+(id-1)}><HiArrowSmLeft className='text-5xl '/>Previous Item</Link>}</div>
+   <div class="p-2"><Link to={"/ProductDetail/"+(id+1)}><HiArrowSmRight className='text-5xl '/>Next Item</Link></div>
+    
+    </div>
+</>:<Loading/>
   )
 }
 
