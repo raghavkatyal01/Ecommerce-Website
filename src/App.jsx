@@ -7,7 +7,7 @@ import ProductDetail from './ProductDetail'
 import PageNotFound from './Components/PageNotFound'
 import { useState } from 'react'
 function App() {
- const savedData= localStorage.getItem("my-cart")||{};
+ const savedData= localStorage.getItem("my-cart")||"{}";
  const storedData=JSON.parse(savedData);
   const[cartItems,totalcartItems]=useState(storedData);
   function handleAddtoCart(productId,no){

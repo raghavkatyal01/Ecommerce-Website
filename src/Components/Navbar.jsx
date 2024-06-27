@@ -12,7 +12,7 @@ function Navbar({productCount}) {
     </div >
     <div class="flex flex-col static">
      <Link to="/cart"><PiShoppingCartSimpleLight className=' mt-4 mr-2 text-3xl'/></Link>
-     <span className=' self-center text-xs ' >{productCount}</span>
+     <span className=' relative left-2 bottom-9 border rounded-full border-black bg-red-500  text-white  hover:bg-black self-center text-xs ' >{productCount}</span>
      </div>
 
     </div>
