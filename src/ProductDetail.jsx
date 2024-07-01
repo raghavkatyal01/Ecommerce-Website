@@ -39,6 +39,7 @@ function ProductDetail({addToCart}) {
     }
   return (
 ProductDetail ? <>
+<div className='bg-gray-200'>
 <Link to="/"><HiArrowSmLeft className='text-3xl'/></Link>
 <div class=" max-h-80  flex items-center justify-center">
       <div class="max-w-4xl flex items-start  m-8 gap-x-6 border-2 p-6  shadow-2xl">
@@ -64,6 +65,7 @@ ProductDetail ? <>
    <div class="p-2"> {id>1 && <Link to={"/ProductDetail/"+(id-1)}><HiArrowSmLeft className='text-5xl '/>Previous Item</Link>}</div>
    <div class="p-2"><Link to={"/ProductDetail/"+(id+1)}><HiArrowSmRight className='text-5xl '/>Next Item</Link></div>
     
+    </div>
     </div>
 </>:<Loading/>
   )
