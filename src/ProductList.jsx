@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import ProductMapping from './ProductMapping'
 import { useState } from 'react';
 import { HiArrowNarrowRight } from "react-icons/hi";
@@ -18,11 +18,9 @@ useEffect( function(){
 },[])
 
 
-function handleQuery(e){
+const handleQuery=useCallback(function (e){
   setQuery(e.target.value);
-
-
-}
+},[])
 
  let data=productList.filter(function(item){
   const allItem=item.title.toLowerCase();
@@ -30,27 +28,30 @@ function handleQuery(e){
 
   return (allItem.indexOf(searchItem)!=-1);
 })
-if(sort=='lowTohigh'){
- data.sort(function(x,y){
-    return x.price-y.price;
-  })
-}
-else if(sort=='highTolow'){
-  data.sort(function(x,y){
-    return y.price-x.price;
-  })
-}
-else if(sort=="name"){
-  data.sort(function(x,y){
-    return x.title < y.tittle ? -1 :1;
-  }) 
-}
+const findSort=useMemo(function(){
+  console.log("sortfunction runung")
+  if(sort=='lowTohigh'){
+    data.sort(function(x,y){
+       return x.price-y.price;
+     })
+   }
+   else if(sort=='highTolow'){
+     data.sort(function(x,y){
+       return y.price-x.price;
+     })
+   }
+   else if(sort=="name"){
+     data.sort(function(x,y){
+       return x.title < y.tittle ? -1 :1;
+     }) 
+   }
+},[sort])
 
-function handleFilter(e){
+findSort
+ const handleFilter=useCallback(function(e){
   setSort(e.target.value);
 
-
-}
+},[])
 
 if(loading){
  return <Loading/>
@@ -60,6 +61,7 @@ if(loading){
 
       
    <>
+   <div className='bg-gray-200 '>
       <div class="flex justify-end max-w-full gap-4 p-2">
         <input type="text" class="w-11 md:w-44 p-2  border-black border-2" placeholder='Search Items' value={query} onChange={handleQuery}/>
         <select  class="p-2 border-2 w-11 md:w-44 border-black" name="Sorted" id="sort" onChange={handleFilter} value={sort}>
@@ -79,7 +81,7 @@ if(loading){
     <a className='border border-black  py-1 px-4' href="">2</a>
     <HiArrowNarrowRight className='text-4xl border border-black ' />
     </div>
-   
+    </div>
   </>
   )
 }
