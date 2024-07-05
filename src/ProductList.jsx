@@ -62,9 +62,9 @@ if(loading){
       
    <>
    <div className='bg-gray-200 '>
-      <div class="flex justify-end max-w-full gap-4 p-2">
-        <input type="text" class="w-11 md:w-44 p-2  border-black border-2" placeholder='Search Items' value={query} onChange={handleQuery}/>
-        <select  class="p-2 border-2 w-11 md:w-44 border-black" name="Sorted" id="sort" onChange={handleFilter} value={sort}>
+      <div className="flex justify-end max-w-full gap-4 p-2">
+        <input type="text" className="w-11 md:w-44 p-2  border-black border-2" placeholder='Search Items' value={query} onChange={handleQuery}/>
+        <select  className="p-2 border-2 w-11 md:w-44 border-black" name="Sorted" id="sort" onChange={handleFilter} value={sort}>
           <option value="default">Default Sorting</option>
           <option value="lowTohigh">Price Low to High</option>
           <option value="highTolow">Price High to Low</option>
