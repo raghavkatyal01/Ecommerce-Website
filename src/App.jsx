@@ -6,7 +6,11 @@ import ProductList from './ProductList'
 import ProductDetail from './ProductDetail'
 import PageNotFound from './Components/PageNotFound'
 import { useState } from 'react'
+import { useLocation } from 'react-router-dom';
 import CartList from './Components/CartList'
+import LoginPage from './Components/LoginPage'
+import SignUp from './Components/SignUp'
+import ForgotPassword from './Components/ForgotPassword' 
 function App() {
  const savedData= localStorage.getItem("my-cart")||"{}";
  const storedData=JSON.parse(savedData);
@@ -22,20 +26,27 @@ function App() {
     return previus+cartItems[current];
   },0)
   
+
+  const location = useLocation();
+  const showFooter = (location.pathname !== '/login' && location.pathname !== '/signUp');
+ 
   return (
     <>
-
+ 
     <Navbar productCount={totalCount}/>
-    <div class="max-h-screen overflow-scroll  ml-16 mr-16 mt-4 mb-8  flex flex-col ">
+    <div className="max-h-screen overflow-scroll  ml-16 mr-16 mt-4 mb-8  flex flex-col ">
 <Routes>
   <Route index element={<ProductList/>}></Route>
   <Route path="/ProductDetail/:id" element={<ProductDetail addToCart={handleAddtoCart}/>}></Route>
   <Route path="/cart" element={<CartList cartItems={cartItems}/>}></Route>
+  <Route path="/login" element={<LoginPage/>}></Route>
+  <Route path="/signUp" element={<SignUp/>}></Route>
+  <Route path="/ForgotPassword" element={<ForgotPassword/>}></Route>
   <Route path="*" element={<PageNotFound/>}></Route>
   <Route></Route>
 </Routes>
 </div>
-    <Footer></Footer>
+{showFooter && <Footer />}
    
     </>
   )

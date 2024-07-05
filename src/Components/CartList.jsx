@@ -19,7 +19,9 @@ function CartList({ cartItems }) {
     });
   }, []);
 
-
+  function handleInputChange(e){
+    
+  }
   if (!loading) {
     return <Loading />;
   }
@@ -48,19 +50,19 @@ const total=calculateTotal;
 
         {product.map(function (item) {
           return (
-            <div className=" bg-white px-4 flex">
+            <div key={item.id} className=" border-b border-gray-500 bg-white px-4 flex">
               <div className="w-1/2  flex items-center">
                 <MdDelete className="text-2xl " />
-                <img className="max-w-32" src={item.thumbnail} alt="" />
+                <img className="max-w-20" src={item.thumbnail} alt="" />
                 <p className="ml-20">{item.title}</p>
               </div>
               <div className="flex w-1/2 flex-row justify-between items-center">
                 <p>{item.price}</p>
 
-                <p className="border  py-2 border-gray-300 px-4">
-                  {cartItems[item.id]}
-                </p>
-                <p clas>{(item.price * cartItems[item.id]).toFixed(2)}</p>
+                <input type="number" value={cartItems[item.id]} onChange={handleInputChange} className="border px-1 w-11 py-2 border-gray-300 "/>
+                  
+                
+                <p >{(item.price * cartItems[item.id]).toFixed(2)}</p>
               </div>
             </div>
           );
@@ -69,14 +71,15 @@ const total=calculateTotal;
           <div>
             <input
               type="text"
-              className=" px-8 py-2 mx-2 border border-black"
+              className=" px-2 py-2 mx-2 border border-black"
+              placeholder="Apply Coupon"
             />
-            <button class="bg-gray-400 hover:bg-gray-500  px-16 py-2">
+            <button className="bg-gray-400 hover:bg-gray-500  px-16 py-2">
               Apply coupon
             </button>
           </div>
           <div>
-            <button class="bg-gray-400 hover:bg-gray-500  px-16 py-2">
+            <button className="bg-gray-400 hover:bg-gray-500  px-16 py-2">
               UPDATE CART
             </button>
           </div>
@@ -99,7 +102,7 @@ const total=calculateTotal;
               </div>
             </div>
             <div className="w-full bg-white">
-            <button class="bg-gray-400 hover:bg-gray-500 mt-0 px-16 py-2">
+            <button className="bg-gray-400 hover:bg-gray-500 mt-0 px-16 py-2">
               PROCEED TO CHECKOUT
             </button>
             </div>

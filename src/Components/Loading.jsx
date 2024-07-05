@@ -4,7 +4,7 @@ function Loading() {
   return (
    <>
 
-      <div class="  h-96  text-5xl flex items-center justify-center animate-spin">
+      <div className="  h-96  text-5xl flex items-center justify-center animate-spin">
       <ImSpinner />  
 </div>
     </>
