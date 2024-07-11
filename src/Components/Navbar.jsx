@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
 function Navbar({productCount,cartItems}) {
+
   return (
     <>
-    <div className="flex w-full top-0 justify-between bg-gray-400">
+    <div className="flex w-full top-0 fixed justify-between bg-gray-400 ">
         <div className="flex flex-col justify-center">
         
     <Link to="/"><img className=" ml-2 max-w-16"src="https://cdn4.iconfinder.com/data/icons/flat-brand-logo-2/512/amazon-1024.png" alt="" /></Link> 

@@ -49,7 +49,7 @@ function SignUp() {
       };
   return (
     <>
-      <div className="max-h-screen flex   justify-center ">
+      <div className="max-h-screen flex mt-20  justify-center ">
         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={saveDataToApi}>
         <Form  
           className="flex flex-col gap-2  justify-center items-center "

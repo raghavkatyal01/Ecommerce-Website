@@ -18,6 +18,9 @@ function App() {
   function handleAddtoCart(productId,no){
     const oldCount=cartItems[productId]||0;
     const newCart={...cartItems,[productId]:oldCount+no};
+    updateCart(newCart);
+    }
+  function updateCart(newCart){
     const Data=JSON.stringify(newCart);
     localStorage.setItem("my-cart",Data);
   totalcartItems(newCart);
@@ -26,28 +29,28 @@ function App() {
     return previus+cartItems[current];
   },0)
   
-
+console.log(totalCount)
   const location = useLocation();
   const showFooter = (location.pathname !== '/login' && location.pathname !== '/signUp');
  
   return (
     <>
- 
+ <div className="max-h-screen overflow-scroll    flex flex-col ">
     <Navbar productCount={totalCount}/>
-    <div className="max-h-screen overflow-scroll  ml-16 mr-16 mt-4 mb-8  flex flex-col ">
+    
 <Routes>
   <Route index element={<ProductList/>}></Route>
   <Route path="/ProductDetail/:id" element={<ProductDetail addToCart={handleAddtoCart}/>}></Route>
-  <Route path="/cart" element={<CartList cartItems={cartItems}/>}></Route>
+  <Route path="/cart" element={<CartList cartItems={cartItems} updateMyCart={updateCart}/>}></Route>
   <Route path="/login" element={<LoginPage/>}></Route>
   <Route path="/signUp" element={<SignUp/>}></Route>
   <Route path="/ForgotPassword" element={<ForgotPassword/>}></Route>
   <Route path="*" element={<PageNotFound/>}></Route>
   <Route></Route>
 </Routes>
-</div>
+
 {showFooter && <Footer />}
-   
+</div> 
     </>
   )
 }

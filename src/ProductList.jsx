@@ -61,7 +61,7 @@ if(loading){
 
       
    <>
-   <div className='bg-gray-200 '>
+   <div className='bg-gray-200 mt-20 mx-2 my-4'>
       <div className="flex justify-end max-w-full gap-4 p-2">
         <input type="text" className="w-11 md:w-44 p-2  border-black border-2" placeholder='Search Items' value={query} onChange={handleQuery}/>
         <select  className="p-2 border-2 w-11 md:w-44 border-black" name="Sorted" id="sort" onChange={handleFilter} value={sort}>

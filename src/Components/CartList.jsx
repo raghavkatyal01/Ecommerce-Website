@@ -3,11 +3,19 @@ import { getProduct } from "../Api";
 import Loading from "./Loading";
 import { MdDelete } from "react-icons/md";
 
-function CartList({ cartItems }) {
+function CartList({ cartItems,updateMyCart}) {
   const [product, setProducts] = useState();
   const [loading, setLoading] = useState(false);
+  const [mycart,setcart] =useState(cartItems);
+  const [buttonClass, setButtonClass] = useState("opacity-25 cursor-not-allowed");
+  useEffect(() => {
+    setcart(cartItems);
+  }, [cartItems]);
+  console.log("cartitem",cartItems);
+  console.log("mycartitem",mycart);
   useEffect(function () {
-    const promises = Object.keys(cartItems).map(function (item) {
+    setLoading(false);
+    const promises = Object.keys(mycart).map(function (item) {
       return getProduct(item);
     });
 
@@ -17,9 +25,28 @@ function CartList({ cartItems }) {
       setProducts(responses);
       setLoading(true);
     });
-  }, []);
+  }, [mycart]);
+function deleteItems(productId){
+  
 
-  function handleInputChange(e){
+  const newcart={...mycart}
+  delete newcart[productId]
+
+  setcart(newcart)
+  updateMyCart(newcart)
+  
+
+}
+  function handleInputChange(val,inptId){
+   
+
+    const newcart={...mycart,[inptId]:val};
+    setcart(newcart)
+    setButtonClass("opacity-100 cursor-pointer  hover:bg-gray-500 ")
+  }
+
+  function updateafterChange(){
+    updateMyCart(mycart)
     
   }
   if (!loading) {
@@ -29,14 +56,14 @@ function CartList({ cartItems }) {
     return <Loading />;
   }
   const calculateTotal =product.reduce((total, item) => {
-    return total + (item.price || 0 )* (cartItems[item.id]||0);
+    return total + (item.price || 0 )* (mycart[item.id]||0);
   }, 0);
-;
+
 const total=calculateTotal;
 
   return (
     <>
-      <div className="bg-white max-h-screen">
+      <div className="bg-white max-h-screen mt-20 m-4">
         <div className="p-2 border bg-gray-300 border-black  flex ">
           <div className="w-1/2 flex justify-center">
             <p>Product</p>
@@ -49,20 +76,25 @@ const total=calculateTotal;
         </div>
 
         {product.map(function (item) {
+          
           return (
             <div key={item.id} className=" border-b border-gray-500 bg-white px-4 flex">
               <div className="w-1/2  flex items-center">
+              <button  onClick={()=>{deleteItems(item.id)}}>
                 <MdDelete className="text-2xl " />
+                </button>
                 <img className="max-w-20" src={item.thumbnail} alt="" />
                 <p className="ml-20">{item.title}</p>
               </div>
               <div className="flex w-1/2 flex-row justify-between items-center">
                 <p>{item.price}</p>
 
-                <input type="number" value={cartItems[item.id]} onChange={handleInputChange} className="border px-1 w-11 py-2 border-gray-300 "/>
+                <input  type="number" min="1" value={mycart[item.id]} onChange={(e)=>{
+                  handleInputChange(+e.target.value,item.id)
+                }} className="border px-1 w-11 py-2 border-gray-300 "/>
                   
                 
-                <p >{(item.price * cartItems[item.id]).toFixed(2)}</p>
+                <p >{(item.price *mycart[item.id]).toFixed(2)}</p>
               </div>
             </div>
           );
@@ -79,7 +111,7 @@ const total=calculateTotal;
             </button>
           </div>
           <div>
-            <button className="bg-gray-400 hover:bg-gray-500  px-16 py-2">
+            <button onClick={updateafterChange}  className={"bg-gray-400  px-16 py-2 "+buttonClass}>
               UPDATE CART
             </button>
           </div>
