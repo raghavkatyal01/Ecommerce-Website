@@ -39,9 +39,9 @@ function ProductDetail({addToCart}) {
     }
   return (
 ProductDetail ? <>
-<div className='bg-gray-200'>
+<div className='bg-gray-200 mt-20 m-4'>
 <Link to="/"><HiArrowSmLeft className='text-3xl'/></Link>
-<div className=" max-h-80  flex items-center justify-center">
+<div className=" max-h-80 m-2 flex items-center justify-center">
       <div className="max-w-4xl flex items-start  m-8 gap-x-6 border-2 p-6  shadow-2xl">
         <img
           className="max-w-80"
