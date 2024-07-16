@@ -1,40 +1,68 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Form, Formik, useFormik, withFormik } from 'formik';
 import * as Yup from 'yup';
 import Input from "./Input";
 import { FormikInput } from "./Input";
-function callLoginApi(values){
-    console.log("sending data",values.email,values.password)
+import axios from "axios";
+import { useState } from "react";
+import { withAlert, withUser } from "./withProvider";
+
+
+function callLoginApi(values,bag){
+  
+    axios.post("https://myeasykart.codeyogi.io/login",{
+      email:values.email,
+      password:values.password,
+    }).then((response)=>{
+      bag.props.setAlert({type:"success", message : "Login Successfull"})
+  
+      setTimeout(()=>{
+        
+      const {user,token}=response.data
+      localStorage.setItem("token",token)
+      bag.props.setUser(user)
+    
+    },2000)
+      
+
+     
+
+    }).catch(()=>{
+      bag.props.setAlert({type:"error", message : "Invalid Credential"})
+    })
   }
   const schema=Yup.object().shape({
     email: Yup.string().email().required(),
-    password: Yup.string().min(8).required(),
+    password: Yup.string().required(),
   });
   const InitialValues={
     email:"",
     password:"",
   }
-function LoginPage({touched,errors,handleChange,handleBlur,values}) {
+function LoginPage({touched,errors,handleChange,handleBlur,values,handleSubmit,user}) {
   
-//  const {values,handleSubmit,handleChange,errors,touched,handleBlur,isValid}=useFormik({
-//     initialValues:{
-//       email:"",
-//       password:"",
-//     },
-//     onSubmit:callLoginApi,
-//     validationSchema:schema,
-//     validateOnMount:true,
-//   })
 
- 
+
+const [RedirectToSignup,setRedirectToSignup] =useState(false)
+
+  if(user){
+    return <Navigate to='/'></Navigate>
+  }
+
+
+if(RedirectToSignup){
+  return <Navigate to='/signUp'></Navigate>
+}
+
+
   return (
     <>
      
-    
-      <div className="max-h-screen flex items-center mt-20  justify-center ">
+     
+      <div className="max-h-screen flex items-center mt-16  justify-center ">
       
-        <form onSubmit={callLoginApi}  className="flex flex-col justify-center items-center ">
+        <form onSubmit={handleSubmit}  className="flex flex-col justify-center items-center ">
           <img
             className="max-w-52"
             src="https://st2.depositphotos.com/6628792/9630/v/950/depositphotos_96308306-stock-illustration-shopping-cart-icon.jpg"
@@ -51,13 +79,14 @@ function LoginPage({touched,errors,handleChange,handleBlur,values}) {
             
                 <Link to='/ForgotPassword'><p className="text-purple-700 ">Forgot Password?</p></Link>
             </div>
-            <p className='mt-8 text-xl'>Don't have an account? <Link to='/signUp'><span className="text-purple-700">Signup</span></Link></p>
+            <p className='mt-8 text-xl'>Don't have an account?  <button type="button" onClick={()=>setRedirectToSignup(true)} className="text-purple-700">SignUp</button></p>
+        
         </form>
    
       </div>
     </>
   );
 }
-const myHOC=withFormik({validationSchema:schema,initialValues:InitialValues,onSubmit:callLoginApi})
+const myHOC=withFormik({validationSchema:schema,initialValues:InitialValues,handleSubmit:callLoginApi})
 const EasyLogin=myHOC(LoginPage)
-export default EasyLogin;
+export default withAlert(withUser(EasyLogin))

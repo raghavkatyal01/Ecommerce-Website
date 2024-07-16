@@ -117,28 +117,29 @@ const total=calculateTotal;
           </div>
         </div>
         <div className=" flex flex-row bg-white justify-end ">
-          <div className="flex mt-4 flex-col gap-8 border border-black w-64  h-28 justify-between">
-            <div className="flex flex-col gap-3 ">
+          <div className="flex mt-4 p-2 flex-col gap-2  min-h-24 w-64  justify-between">
+            <div className="flex flex-col  border-black border  gap-3 ">
               <div className="flex flex-row w-full justify-center border-b border-black">
                 <h2>Cart Totals</h2>
               </div>
 
-              <div className="flex flex-row justify-between border-b border-black ">
+              <div className="flex flex-row justify-between border-b p-2 border-black ">
                 <p>SubTotal</p>
                 <p>{total.toFixed(2)}</p>
   
               </div>
-              <div className="flex justify-between flex-row">
+              <div className="flex justify-between p-2 flex-row">
                 <p>Total</p>
                 <p>{total.toFixed(2)}</p>
               </div>
             </div>
-            <div className="w-full bg-white">
-            <button className="bg-gray-400 hover:bg-gray-500 mt-0 px-16 py-2">
+         
+            <div className=" bg-white">
+            <button className="bg-gray-400 hover:bg-gray-500 mt-2 px-16 py-2">
               PROCEED TO CHECKOUT
             </button>
             </div>
-          </div>
+            </div>
           
         </div>
       </div>

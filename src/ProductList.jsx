@@ -1,14 +1,20 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback,  useEffect, useMemo } from 'react'
 import ProductMapping from './ProductMapping'
 import { useState } from 'react';
 import { HiArrowNarrowRight } from "react-icons/hi";
 import Loading from './Components/Loading';
 import { getProduct,getProductList } from './Api';
-function ProductList() {
+import { Navigate } from 'react-router-dom';
+import { withUser } from './Components/withProvider';
+function ProductList({user}) {
 const [query,setQuery]=useState('');
 const [sort,setSort]=useState('lowTohigh');
 const [productList,setProductList] = useState([]);
 const [loading,setLoading]=useState(true);
+
+if(!user){
+  return <Navigate to="/login"></Navigate>
+}
 useEffect( function(){
   let p =getProductList();
   p.then(function(response){
@@ -61,7 +67,7 @@ if(loading){
 
       
    <>
-   <div className='bg-gray-200 mt-20 mx-2 my-4'>
+   <div className='bg-gray-200 mt-24 mb-16 mx-16 '>
       <div className="flex justify-end max-w-full gap-4 p-2">
         <input type="text" className="w-11 md:w-44 p-2  border-black border-2" placeholder='Search Items' value={query} onChange={handleQuery}/>
         <select  className="p-2 border-2 w-11 md:w-44 border-black" name="Sorted" id="sort" onChange={handleFilter} value={sort}>
@@ -86,4 +92,4 @@ if(loading){
   )
 }
 
-export default ProductList
+export default withUser(ProductList)

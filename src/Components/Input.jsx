@@ -10,7 +10,7 @@ function Input({type,name,placeholder,touched,error,onChange,onBlur,value,...res
     <>
     
      <div className="flex flex-col justify-start">
-      <input type={type} name={name}  onChange={onChange} onBlur={onBlur} value={value} placeholder={placeholder} {...rest} className={"py-1 w-64 rounded-md px-1 border border-black   "+bordercolor} />
+      <input type={type} name={name} autocomplete="new-password" onChange={onChange} onBlur={onBlur} value={value} placeholder={placeholder} {...rest} className={"py-1 w-64 rounded-md px-1 border border-black   "+bordercolor} />
       {touched&&error && <div className="text-sm  text-red-500">{error}</div>}
       </div>
     </>
