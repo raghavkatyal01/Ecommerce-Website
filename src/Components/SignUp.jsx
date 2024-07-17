@@ -4,48 +4,45 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { FormikInput } from "./Input";
 import Input from "./Input";
-function SignUp() {
-  function saveDataToApi(values) {
-    console.log(
-      "Saving Data",
-      values.fName,
-      values.lName,
-      values.email,
-      values.password
-    );
-  }
+import axios from "axios";
+import { withAlert,withUser } from "./withProvider";
+
+function SignUp({setAlert,setUser}) {
+
   const schema = Yup.object().shape({
-    fName: Yup.string().required("Required Field"),
-    lName: Yup.string().required("Required Field"),
+  
+    fullName: Yup.string().required("Required Field"),
     email: Yup.string().required().email(),
     password: Yup.string().required().min(8),
-    Confpassword: Yup.string().required("Required Field").min(8,"password not matched"),
+   
   });
-  // const {
-  //   handleSubmit,
-  //   handleChange,
-  //   handleBlur,
-  //   touched,
-  //   handleReset,
-  //   values,
-  //   errors,
-  // } = useFormik({
-  //   initialValues: {
-  //     fName: "",
-  //     lName: "",
-  //     email: "",
-  //     password: "",
-  //     Confpassword: "",
-  //   },
-  //   onSubmit: saveDataToApi,
-  //   validationSchema: schema,
-  // });
+
+  function saveDataToApi(values){
+
+    axios.post("https://myeasykart.codeyogi.io/signup",{
+      fullName:values.fullName,
+      email:values.email,
+      password:values.password
+    }).then((response)=>{
+      setAlert({type:"success", message : "SignUp Successfull"})
+      setTimeout(()=>{
+        
+        const {user,token}=response.data
+        localStorage.setItem("token",token)
+        setUser(user)
+      
+      },2000)
+
+    }).catch(()=>{
+     setAlert({type:"error", message : "Already Registered"})
+    })
+  }
+ 
   const initialValues={
-        fName: "",
-        lName: "",
+       fullName:"",
         email: "",
         password: "",
-        Confpassword: "",
+       
       };
   return (
     <>
@@ -60,11 +57,11 @@ function SignUp() {
             alt=""
           />
        
-            <FormikInput type="text" placeholder="First Name" name="fName"/>
-            <FormikInput type="text" placeholder="Last Name" name="lName"/>
-            <FormikInput type="email" placeholder="Enter Username" name="email"/>
+        
+            <FormikInput type="text" placeholder="Full Name" name="fullName"/>
+            <FormikInput type="email" placeholder="Enter Email" name="email"/>
             <FormikInput type="password" placeholder="Password" name="password"/>
-            <FormikInput type="password" placeholder="Re-Enter Password" name="Confpassword"/>
+            
          
           <div className="w-64 flex justify-between">
             <button
@@ -76,6 +73,7 @@ function SignUp() {
             <button
               type="submit"
               className="py-1 rounded-xl bg-gray-400 mt-2 hover:bg-gray-500 w-20"
+              
             >
               SignUp
             </button>
@@ -93,4 +91,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default withUser(withAlert(SignUp));

@@ -4,7 +4,7 @@ import { GrValidate } from "react-icons/gr";
 import { withAlert } from './withProvider';
 function Alert({alert,removeAlert}) {
    if(!alert){
-    return
+    return <></>
    }
     const {type,message}=alert
  

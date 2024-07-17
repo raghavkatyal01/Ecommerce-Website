@@ -79,7 +79,7 @@ if(loading){
       </div>
 
     {data.length>0 && <ProductMapping products={data}/>}
-    {data.length==0 && <div className='flex h-80 items-center justify-center bg-gray-300 m-4 text-black text-3xl'>Result Not Found</div>}
+    {data.length==0 && <div className='flex h-80 items-center justify-center  m-4 text-black text-3xl'>Result Not Found</div>}
     <div className='mt-6   flex items-center mb-2 ml-8 gap-1'>
       
    

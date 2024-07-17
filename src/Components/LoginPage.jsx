@@ -24,9 +24,6 @@ function callLoginApi(values,bag){
       bag.props.setUser(user)
     
     },2000)
-      
-
-     
 
     }).catch(()=>{
       bag.props.setAlert({type:"error", message : "Invalid Credential"})
@@ -40,23 +37,9 @@ function callLoginApi(values,bag){
     email:"",
     password:"",
   }
-function LoginPage({touched,errors,handleChange,handleBlur,values,handleSubmit,user}) {
+function LoginPage({touched,errors,handleChange,handleBlur,values,handleSubmit}) {
   
-
-
-const [RedirectToSignup,setRedirectToSignup] =useState(false)
-
-  if(user){
-    return <Navigate to='/'></Navigate>
-  }
-
-
-if(RedirectToSignup){
-  return <Navigate to='/signUp'></Navigate>
-}
-
-
-  return (
+return (
     <>
      
      
@@ -79,7 +62,7 @@ if(RedirectToSignup){
             
                 <Link to='/ForgotPassword'><p className="text-purple-700 ">Forgot Password?</p></Link>
             </div>
-            <p className='mt-8 text-xl'>Don't have an account?  <button type="button" onClick={()=>setRedirectToSignup(true)} className="text-purple-700">SignUp</button></p>
+            <p className='mt-8 text-xl'>Don't have an account? <Link to="/signUp"> <button type="button"  className="text-purple-700">SignUp</button></Link></p>
         
         </form>
    
