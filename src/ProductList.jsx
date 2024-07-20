@@ -1,63 +1,71 @@
 import React, { useCallback,  useEffect, useMemo } from 'react'
 import ProductMapping from './ProductMapping'
 import { useState } from 'react';
-import { HiArrowNarrowRight } from "react-icons/hi";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import Loading from './Components/Loading';
 import { getProduct,getProductList } from './Api';
 import { Navigate } from 'react-router-dom';
 import { withUser } from './Components/withProvider';
+import { range, replace } from 'lodash';
+import { useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 function ProductList({user}) {
-const [query,setQuery]=useState('');
-const [sort,setSort]=useState('lowTohigh');
+
 const [productList,setProductList] = useState([]);
 const [loading,setLoading]=useState(true);
 
-if(!user){
-  return <Navigate to="/login"></Navigate>
-}
+
+  const [totalPages, setTotalPages] = useState(1); 
+  let [searchParams, setSearchParams] = useSearchParams();
+  const ITEMS_PER_PAGE = 9;
+
+
+  
+ const params=Object.fromEntries([...searchParams])
+ console.log("pRms",params);
+
+let {query,sort,pageNo} = params
+console.log("pgno",pageNo)
+query=query||""
+sort=sort||"default"
+ pageNo=+pageNo||1
+console.log(pageNo)
 useEffect( function(){
-  let p =getProductList();
+  let sortBy,sortType;
+
+if(sort=="name"){
+  sortBy="title"
+}
+else if(sort=="highTolow"){
+  sortBy="price"
+  sortType="desc"
+}
+else if(sort=="lowTohigh"){
+   sortBy="price"
+}
+  let p =getProductList(pageNo,query,sortBy,sortType,ITEMS_PER_PAGE);
   p.then(function(response){
-   setProductList(response)
+    
+   setProductList(response.products)
+   setTotalPages(Math.ceil(response.total/ITEMS_PER_PAGE))
    setLoading(false);
   })
-},[])
+},[sort,query,pageNo])
+
+function handleQuery(e){
+  setSearchParams({...params,query:e.target.value})
+  
+}
 
 
-const handleQuery=useCallback(function (e){
-  setQuery(e.target.value);
-},[])
+  function handlePageChange(newPage) {
+  setSearchParams({...params, pageNo: newPage });
+}
 
- let data=productList.filter(function(item){
-  const allItem=item.title.toLowerCase();
-  const searchItem=query.toLowerCase();
-
-  return (allItem.indexOf(searchItem)!=-1);
-})
-const findSort=useMemo(function(){
-  console.log("sortfunction runung")
-  if(sort=='lowTohigh'){
-    data.sort(function(x,y){
-       return x.price-y.price;
-     })
-   }
-   else if(sort=='highTolow'){
-     data.sort(function(x,y){
-       return y.price-x.price;
-     })
-   }
-   else if(sort=="name"){
-     data.sort(function(x,y){
-       return x.title < y.tittle ? -1 :1;
-     }) 
-   }
-},[sort])
-
-findSort
- const handleFilter=useCallback(function(e){
-  setSort(e.target.value);
-
-},[])
+function handleFilter(e){
+  setSearchParams({...params,sort:e.target.value},
+   );
+}
 
 if(loading){
  return <Loading/>
@@ -78,14 +86,32 @@ if(loading){
         </select>
       </div>
 
-    {data.length>0 && <ProductMapping products={data}/>}
-    {data.length==0 && <div className='flex h-80 items-center justify-center  m-4 text-black text-3xl'>Result Not Found</div>}
+    {productList.length>0 && <ProductMapping products={productList}/>}
+    {productList.length==0 && <div className='flex h-80 items-center justify-center  m-4 text-black text-3xl'>Result Not Found</div>}
     <div className='mt-6   flex items-center mb-2 ml-8 gap-1'>
-      
+     {(pageNo>1 ) && (
+     <HiArrowNarrowLeft className='text-4xl border border-black' onClick={() => handlePageChange(pageNo-1 )} />
+    )
+  } 
+   {pageNo < totalPages && range(pageNo,pageNo+2).map((item)=>
+
+   {
+
+    return (pageNo < totalPages) && <Link  to={'?'+new URLSearchParams({...params,pageNo:item})}  className={`border border-black py-1 px-4 ${pageNo === item ? 'bg-gray-500' : ''}`} href="">{item}</Link>
+    }
+
+   )}
+   { (pageNo < totalPages) && (
+     <HiArrowNarrowRight className='text-4xl border border-black' onClick={() => handlePageChange(pageNo+1 )} />
+    )
+  }
+ 
    
-    <a className='border border-black py-1 px-4 ' href="">1</a>
-    <a className='border border-black  py-1 px-4' href="">2</a>
-    <HiArrowNarrowRight className='text-4xl border border-black ' />
+   
+   
+    
+  
+   {/* <HiArrowNarrowRight className='text-4xl border border-black ' /> */}
     </div>
     </div>
   </>

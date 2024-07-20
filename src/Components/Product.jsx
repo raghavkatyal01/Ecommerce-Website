@@ -4,7 +4,7 @@ function Product({thumbnail,title,price,id}) {
   return (
    <>
    <Link to={"/ProductDetail/"+ id}>
-   <div class=" max-w-96 flex flex-col ml-12 m-4 transform transition duration-150 hover:scale-105 hover:shadow-2xl shadow-xl">
+   <div key={id} class=" max-w-96 flex flex-col ml-12 m-4 transform transition duration-150 hover:scale-105 hover:shadow-2xl shadow-xl">
    
     <img class=" h-full w-full"src={thumbnail} alt="" />
    

@@ -1,16 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import { withUser } from './withProvider';
 import { useNavigate } from 'react-router-dom';
+import Loading from './Loading';
 function Navbar({productCount,user,setUser}) {
-
-  const navigate = useNavigate();
+ const navigate=useNavigate()
   if(!user){
-   navigate('/login');
-  }
+    navigate('/login');
+   }
+  
   const [dropdownOpen,setDropdownOpen]=useState(false)
   function toggleDropdown(){
     setDropdownOpen(!dropdownOpen)
@@ -18,6 +19,7 @@ function Navbar({productCount,user,setUser}) {
   function handleLogout(){
     localStorage.removeItem("token")
     setUser(undefined)
+    
   }
 
   return (

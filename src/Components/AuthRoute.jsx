@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 
 import { withUser } from './withProvider'
 
 function AuthRoute({user,children}) {
-    if(user){
-        return <Navigate to="/"/>
-    }
+  if(user){
+    console.log("rinining")
+   return <Navigate to='/' replace></Navigate>
+  }
+ 
   return children
 }
 
