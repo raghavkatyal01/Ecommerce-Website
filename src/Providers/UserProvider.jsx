@@ -32,7 +32,7 @@ if (loading) {
     return <Loading />;
   }
   return (
-<userContext.Provider value={{user,setUser}}>
+<userContext.Provider value={{loggedIn:!!user,user,setUser}}>
     {children}
 </userContext.Provider>
   )

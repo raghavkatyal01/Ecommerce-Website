@@ -7,6 +7,7 @@ import { FormikInput } from "./Input";
 import axios from "axios";
 import { useState } from "react";
 import { withAlert, withUser } from "./withProvider";
+import Alert from "./Alert";
 
 
 function callLoginApi(values,bag){
@@ -15,7 +16,9 @@ function callLoginApi(values,bag){
       email:values.email,
       password:values.password,
     }).then((response)=>{
+      
       bag.props.setAlert({type:"success", message : "Login Successfull"})
+      
   
       setTimeout(()=>{
         

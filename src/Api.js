@@ -41,3 +41,26 @@ export function getProduct(id){
         return response.data;
     });
 }
+export function setCart(cart){
+    return axios.post("https://myeasykart.codeyogi.io/carts",{data:cart},
+        {
+            headers:{
+                Authorization: localStorage.getItem("token")
+            }
+        }
+    )
+
+}
+export function getCart(){
+    return axios.get("https://myeasykart.codeyogi.io/carts",{
+        headers:{
+            Authorization:localStorage.getItem("token")
+        }
+    }).then((response)=>{
+        console.log("resp",response)
+      return response.data.reduce((acc, { product, quantity }) => {
+           return {...acc,[product.id]: quantity}
+          }, {});
+    })
+    
+}

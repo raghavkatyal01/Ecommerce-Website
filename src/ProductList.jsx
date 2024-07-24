@@ -9,7 +9,7 @@ import { withUser } from './Components/withProvider';
 import { range, replace } from 'lodash';
 import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-function ProductList({user}) {
+function ProductList() {
 
 const [productList,setProductList] = useState([]);
 const [loading,setLoading]=useState(true);
@@ -22,7 +22,7 @@ const [loading,setLoading]=useState(true);
 
   
  const params=Object.fromEntries([...searchParams])
- console.log("pRms",params);
+ 
 
 let {query,sort,pageNo} = params
 console.log("pgno",pageNo)
@@ -111,11 +111,11 @@ if(loading){
    
     
   
-   {/* <HiArrowNarrowRight className='text-4xl border border-black ' /> */}
+
     </div>
     </div>
   </>
   )
 }
 
-export default withUser(ProductList)
+export default ProductList

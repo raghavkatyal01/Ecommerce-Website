@@ -4,16 +4,16 @@ function Product({thumbnail,title,price,id}) {
   return (
    <>
    <Link to={"/ProductDetail/"+ id}>
-   <div key={id} class=" max-w-96 flex flex-col ml-12 m-4 transform transition duration-150 hover:scale-105 hover:shadow-2xl shadow-xl">
+   <div key={id} className=" max-w-96 flex flex-col ml-12 m-4 transform transition duration-150 hover:scale-105 hover:shadow-2xl shadow-xl">
    
-    <img class=" h-full w-full"src={thumbnail} alt="" />
+    <img className=" h-full w-full"src={thumbnail} alt="" />
    
 
-        <h1 class=" p-2 text-m">{title}</h1>
-        <span class="grow"></span>
+        <h1 className=" p-2 text-m">{title}</h1>
+        <span className="grow"></span>
     
-        <img class="w-16 hover:bg-sky-700"src="https://i.ibb.co/tc8FTpS/rating-1.png" alt="" />
-        <p class="p-2 text-sm">Rs. {price}</p>
+        <img className="w-16 hover:bg-sky-700"src="https://i.ibb.co/tc8FTpS/rating-1.png" alt="" />
+        <p className="p-2 text-sm">Rs. {price}</p>
        
 
    

@@ -3,10 +3,10 @@ import { Link, Navigate } from 'react-router-dom'
 import { PiShoppingCartSimpleLight } from "react-icons/pi";
 import { CgProfile } from "react-icons/cg";
 import { RiArrowDropDownFill } from "react-icons/ri";
-import { withUser } from './withProvider';
+import { withUser,withCart } from './withProvider';
 import { useNavigate } from 'react-router-dom';
-import Loading from './Loading';
-function Navbar({productCount,user,setUser}) {
+
+function Navbar({totalCount,user,setUser}) {
  const navigate=useNavigate()
   if(!user){
     navigate('/login');
@@ -43,8 +43,11 @@ function Navbar({productCount,user,setUser}) {
               <div className="absolute right-0 mt-2 mr-8 max-w-30 bg-white border border-black rounded-md shadow-lg z-10">
                 <ul className="py-1">
                 
-                  <li className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-                      <button  onClick={handleLogout}>Logout</button>
+                  <li className="block px-4 py-2 text-black font-bold">
+                      Welcome {user.full_name}
+                  </li>
+                  <li className="cursor-pointer px-4 py-2 flex justify-center text-gray-800 hover:bg-gray-100">
+                      <a  onClick={handleLogout}>Logout</a>
                   </li>
                 </ul>
               </div>
@@ -55,7 +58,7 @@ function Navbar({productCount,user,setUser}) {
     <Link to="/login"><CgProfile className='text-3xl '/></Link>
     <div className="flex flex-col static">
      <Link to="/cart"><PiShoppingCartSimpleLight className=' mt-4 mr-2 text-3xl'/></Link>
-     <span className=' relative left-2 bottom-9 border rounded-full border-black bg-red-500  text-white  px-1 hover:bg-black self-center text-xs ' >{productCount}</span>
+     <span className=' relative left-2 bottom-9 border rounded-full border-black bg-red-500  text-white  px-1 hover:bg-black self-center text-xs ' >{totalCount}</span>
      </div>
      </div>
     </div>
@@ -63,4 +66,4 @@ function Navbar({productCount,user,setUser}) {
   )
 }
 
-export default withUser( Navbar)
+export default withUser(withCart( Navbar))

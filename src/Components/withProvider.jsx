@@ -1,5 +1,5 @@
 import React ,{useContext} from 'react'
-import { AlertContext, userContext } from '../Context';
+import { AlertContext, userContext,CartContext } from '../Context';
 
 
 function withProvider(provider){
@@ -17,5 +17,6 @@ return myHOC;
 export default withProvider
 export const withUser=withProvider(userContext)
 export const withAlert=withProvider(AlertContext)
+export const withCart=withProvider(CartContext)
 
 

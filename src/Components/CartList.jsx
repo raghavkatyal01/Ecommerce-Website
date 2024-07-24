@@ -3,16 +3,18 @@ import { getProduct } from "../Api";
 import Loading from "./Loading";
 import { MdDelete } from "react-icons/md";
 
-function CartList({ cartItems,updateMyCart}) {
+import { withCart } from "./withProvider";
+import PageNotFound from "./PageNotFound";
+import EmptyCart from "./EmptyCart";
+function CartList({ cartItems,updateCart}) {
   const [product, setProducts] = useState();
   const [loading, setLoading] = useState(false);
-  const [mycart,setcart] =useState(cartItems);
+  const [mycart,setMyCart] =useState(cartItems);
   const [buttonClass, setButtonClass] = useState("opacity-25 cursor-not-allowed");
   useEffect(() => {
-    setcart(cartItems);
+    setMyCart(cartItems);
   }, [cartItems]);
-  console.log("cartitem",cartItems);
-  console.log("mycartitem",mycart);
+
   useEffect(function () {
     setLoading(false);
     const promises = Object.keys(mycart).map(function (item) {
@@ -20,33 +22,32 @@ function CartList({ cartItems,updateMyCart}) {
     });
 
     const allPromise = Promise.all(promises);
-
+    
     allPromise.then(function (responses) {
+      
       setProducts(responses);
+   
       setLoading(true);
     });
   }, [mycart]);
 function deleteItems(productId){
-  
-
-  const newcart={...mycart}
+   const newcart={...mycart}
   delete newcart[productId]
 
-  setcart(newcart)
-  updateMyCart(newcart)
-  
+  setMyCart(newcart)
+  updateCart(newcart)
 
 }
   function handleInputChange(val,inptId){
    
 
     const newcart={...mycart,[inptId]:val};
-    setcart(newcart)
+    setMyCart(newcart)
     setButtonClass("opacity-100 cursor-pointer  hover:bg-gray-500 ")
   }
 
   function updateafterChange(){
-    updateMyCart(mycart)
+    updateCart(mycart)
     
   }
   if (!loading) {
@@ -55,15 +56,18 @@ function deleteItems(productId){
   if (!product) {
     return <Loading />;
   }
-  const calculateTotal =product.reduce((total, item) => {
-    return total + (item.price || 0 )* (mycart[item.id]||0);
+  const calculateTotal =product.reduce((total, {price,id}) => {
+    return total + (price || 0 )* (mycart[id]||0);
   }, 0);
 
 const total=calculateTotal;
 
   return (
-    <>
-      <div className="bg-white max-h-screen mt-20 m-4">
+    product.length==0?
+<EmptyCart/>
+   :<>
+   
+      <div className="bg-white min-h-scree  mt-20 m-4">
         <div className="p-2 border bg-gray-300 border-black  flex ">
           <div className="w-1/2 flex justify-center">
             <p>Product</p>
@@ -147,4 +151,4 @@ const total=calculateTotal;
   );
 }
 
-export default CartList;
+export default withCart( CartList);

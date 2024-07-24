@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Form, Formik } from "formik";
+import { Form, Formik, validateYupSchema } from "formik";
 import * as Yup from "yup";
 import { FormikInput } from "./Input";
-import Input from "./Input";
+
 import axios from "axios";
 import { withAlert,withUser } from "./withProvider";
 
@@ -18,12 +18,13 @@ function SignUp({setAlert,setUser}) {
   });
 
   function saveDataToApi(values){
-
+  
     axios.post("https://myeasykart.codeyogi.io/signup",{
       fullName:values.fullName,
       email:values.email,
       password:values.password
     }).then((response)=>{
+  
       setAlert({type:"success", message : "SignUp Successfull"})
       setTimeout(()=>{
         
@@ -44,10 +45,11 @@ function SignUp({setAlert,setUser}) {
         password: "",
        
       };
+
   return (
     <>
       <div className="max-h-screen flex mt-20  justify-center ">
-        <Formik initialValues={initialValues} validationSchema={schema} onSubmit={saveDataToApi}>
+        <Formik  initialValues={initialValues} validationSchema={schema} onSubmit={saveDataToApi} >
         <Form  
           className="flex flex-col gap-2  justify-center items-center "
         >
@@ -65,8 +67,8 @@ function SignUp({setAlert,setUser}) {
          
           <div className="w-64 flex justify-between">
             <button
-              
-              className="py-1 rounded-xl bg-gray-400 mt-2 hover:bg-gray-500 w-20 "
+              type='reset'
+              className="py-1 rounded-xl bg-gray-400 mt-2 hover:bg-gray-500 w-20 " 
             >
               Reset
             </button>

@@ -6,8 +6,8 @@ import { HiArrowSmLeft, HiArrowSmRight } from "react-icons/hi";
 import { getProduct } from './Api';
 import Loading from './Components/Loading';
 import PageNotFound from './Components/PageNotFound';
-
-function ProductDetail({addToCart}) {
+import { withCart } from './Components/withProvider';
+function ProductDetail({onAddtoCart}) {
     const[ProductDetail,setProductDetail] =useState();
     const [loading,setLoading] =useState(true);
     const [count,setCount] = useState(1);
@@ -16,7 +16,7 @@ function ProductDetail({addToCart}) {
       setCount(+(e.target.value));
     }
     function HandleAddtoCart(){
-      addToCart(id,count);
+     onAddtoCart(id,count);
     }
     useEffect(()=>{
         const p=getProduct(id);
@@ -71,4 +71,4 @@ ProductDetail ? <>
   )
 }
 
-export default ProductDetail
+export default withCart(ProductDetail)

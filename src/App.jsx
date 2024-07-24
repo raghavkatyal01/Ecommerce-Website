@@ -16,29 +16,10 @@ import Alert from "./Components/Alert";
 import AlertProvider from "./Providers/AlertProvider";
 
 import UserProvider from "./Providers/UserProvider";
+import CartProvider from "./Providers/CartProvider";
 
 function App() {
-  const savedData = localStorage.getItem("my-cart") || "{}";
-  const storedData = JSON.parse(savedData);
-  const [cartItems, totalcartItems] = useState(storedData);
 
-  
-
-
-  function handleAddtoCart(productId, no) {
-    const oldCount = cartItems[productId] || 0;
-    const newCart = { ...cartItems, [productId]: oldCount + no };
-    updateCart(newCart);
-  }
- 
-  function updateCart(newCart) {
-    const Data = JSON.stringify(newCart);
-    localStorage.setItem("my-cart", Data);
-    totalcartItems(newCart);
-  }
-  const totalCount = Object.keys(cartItems).reduce(function (previus, current) {
-    return previus + cartItems[current];
-  }, 0);
 
   const location = useLocation();
   const showNavbarFooter =
@@ -47,21 +28,22 @@ function App() {
   
   return (
     <>
-      <div className="max-h-screen overflow-scroll    flex flex-col ">
+      <div className="h-screen overflow-scroll    flex flex-col ">
         <UserProvider>
+          <CartProvider>
           <AlertProvider>
-            {showNavbarFooter && <Navbar productCount={totalCount} />}
+            {showNavbarFooter && <Navbar/>}
             <Alert></Alert>
             <Routes>
-              <Route path="/" element={<ProductList />}></Route>
+              <Route path="/" element={<ProductList/>}></Route>
               <Route
                 path="/ProductDetail/:id"
-                element={<ProductDetail addToCart={handleAddtoCart} />}
+                element={<ProductDetail />}
               ></Route>
               <Route
                 path="/cart"
                 element={
-                  <CartList cartItems={cartItems} updateMyCart={updateCart} />
+                  <CartList   />
                 }
               ></Route>
 
@@ -90,6 +72,7 @@ function App() {
               <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
           </AlertProvider>
+          </CartProvider>
           </UserProvider>
         {showNavbarFooter && <Footer />}
       </div>
